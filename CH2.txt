@@ -1,0 +1,65 @@
+2.2 The general form of a simple program 
+
+directives
+
+int main(void)
+{
+  statements
+}
+
+- C uses { and } in much the same way that some other languages use words like begin and end
+
+<DIRECTIVES>
+Before a C program is compiled, it is first edited by a precrocessor.
+Commands intended for the preprocessor are called directives.
+
+Directives begin with a # character
+AND there is no semicolon or other special markers at the end of the directives
+
+<FUNCTIONS>
+Functions are like 'procedures' or 'subroutines' in other programming languages.
+
+In C, a function is a series of statements that have been grouped tohether and given a name. (C uses the term 'function' more loosely than Mathematics)
+Some function computes a value; some don't.
+If they DO compute a value, they use the return statement to specify what value it returns.
+
+A C program may consist a number of functions but only main function is mandatory: it gets called automatically when the program is executed.
+
+The word int before main indicates the function returns an integer value.
+The word void in parentheses indicates that main has no arguments.
+
+return 0; has two effects.
+- causes the main function to terminate
+- indicates that the main function returns a value of 0
+
+*If there is no return statement at the end of the program...
+- the program will still terminate.
+- BUT compiler will produce a warning message
+
+<STATEMENTS>
+A statement is a command to be executed when the program runs.
+Asking a functon to perform its assigned task is called function call
+
+Each statment ends with semicolon. (the compound statement is an exception)
+
+<PRINTING STRINGS>
+printf display a string literal - a series of characters enclosed in double quotation marks.
+- printf doesn't automatically advance to the next output line. (need new-line character)
+
+2.3 Comments
+
+The symbol /* marks the beginning of a comment and the symbol */ marks the end.
+
+Comments can extend over more than one line; once it has seen the /* symbol, the compiler reads (and ignores) whatever follows until it encounters the */ symbol.
+- C99 provides a second kind of comment, which begins with //. It ends automatically at the end of a line.
+
+2.4 Variables and Assignment
+
+Most programs need a way to store data temporarily during program execution; these storage locations are called variables.
+
+<TYPES>
+A type specifies what kind of data the variable will hold.
+- int can store whole number
+- float can store much larger numbers; can store numbers with digits after decimal point
+- Arithmetic on float number may be slower than on int
+- the value of a float variable is often just a approximation of the number that was stored in it.
