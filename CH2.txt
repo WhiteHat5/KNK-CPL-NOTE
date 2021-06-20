@@ -63,3 +63,25 @@ A type specifies what kind of data the variable will hold.
 - float can store much larger numbers; can store numbers with digits after decimal point
 - Arithmetic on float number may be slower than on int
 - the value of a float variable is often just a approximation of the number that was stored in it.
+
+<Declarations>
+Variables must be declared before they can be used
+Declaration specifies the type of the variable and its name.
+- each complete declaration ends with a semicolon
+- declaration must come before statements
+* it is possible to declare variables after statements in C99 (변수를 사용한 후에 그 변수를 선언하는 것은 불가능, 다른 변수를 선언하는 것만 가능)
+
+<ASSIGNMENT>
+변수에 값을 할당하는 것이다
+The right side of the assignment can be a formula(expression) involving constants, variables, and operators 
+
+<INITIALIZATION>
+A variable that doesn't have a default value and hasn't yet been assigned a value by the program is said to be uninitialized.
+Each variables needs its own initializer.
+
+2.6 Defining names for constants
+
+Macro definition can be used to name constants to make their meanings clear
+#define is a preprocessing directive
+If the macro definition contains operators, the expression should be enclosed in parentheses.
+
