@@ -46,3 +46,36 @@ printf가 특정한 형식에 맞추어 출력하는 것처럼 scanf는 특정�
 scanf는 printf와는 다르게 string의 형태가 conversion specifier로만 되어있고 공백없이 붙어있는 경우가 일반적이다 (절대적이지는 않다)
 사실 scanf는 자주 쓰이는 함수는 아니고 오히려 모든 데이터를 문자 형태로 읽고 나중에 숫자 형식으로 바꾸는 경우가 일반적이지만 편하니까 초반에는 쓰겠다고 하는구만
 
+How scanf works
+scanf function is essentially a "pattern-matching" function that tries to match up groups of input characters with conversion specifications
+scanf가 호줄되면 scanf는 format string에 있는 conversion specifier에 맞는 데이터를 입력데이터에서 찾는다, 공백은 필요할 경우 건너뛸 수 있다
+scanf가 찾고 있던 데이터에 존재할 수 없는 문자가 발견되면 멈춘다.
+If the item was read successfully, scanf continue processing the rest of the format string.
+If any item is not read successfully, scanf function returns immediately (뒤의 format string의 내용과 입력 데이터는 무시한다)
+
+scanf 함수는 숫자를 찾을 때 white-space character(공백문자)를 무시한다 (스페이스, 수평탭, 수직탭, form-feed, new-line characters)
+scanf 'peeks' the final new-line character without actually reading it
+--> The new-line character will be the first character read by the next call of scanf
+
+scanf reading integer
+- serch for digit, plus sign, or minus sign
+- read digits until it reaches a non-digit
+
+scanf reading a floating-point number
+- plus and minus sign (optional)
+- a series of digits
+- an exponent(optional) ; an exponent contains the letter e, sign(optional), and one or more digits
+
+scanf를 사용할 때는 conversion specifier로 e,f,g를 사용하는 데에 차이가 없다
+
+scanf가 읽고있는 형식에 맞지 않는 문자를 읽으면 그 문자는 다시 입력데이터로 돌아가며 다음 scnaf 호출 때 첫번째로 읽히게 된다 (정확히는 버퍼로 돌아가는 것 같은데 초반이라서 설명 제대로 안해준 듯)
+
+Ordinary characters in format strings
+- White-space characters
+When it encounters white-space characters in a format string, scanf reads white-space characters until it reaches a non-white-space character (which it 'put back')
+A white-space character in a format string matches any number of white-space characters in the input, including none
+- Other characters
+When it encounters a non-white-space character in a format string, scanf compares it with the next input character.
+If they match, the input character is discarded and scanf continue reading the format string
+If they don't match, the input character is put back to the input and scanf aborts
+
