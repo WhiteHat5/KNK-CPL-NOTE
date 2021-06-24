@@ -37,5 +37,12 @@ g - displays a floating-point number in either exponential format or fixed decim
   - p indicates the maximum number of significant digits to be displayed.
   - not show trailing zeros
   - 소수점 뒤에 숫자가 없으면 소수점도 안 보여줌 
+  
+Escape Sequences
+- Enables strings to contain nonprinting(control) characters and characters that have a special meaning to the compiler(such as ")
 
+3.2 The Scanf function
+printf가 특정한 형식에 맞추어 출력하는 것처럼 scanf는 특정한 형식에 맞추어 입력을 읽는다
+scanf는 printf와는 다르게 string의 형태가 conversion specifier로만 되어있고 공백없이 붙어있는 경우가 일반적이다 (절대적이지는 않다)
+사실 scanf는 자주 쓰이는 함수는 아니고 오히려 모든 데이터를 문자 형태로 읽고 나중에 숫자 형식으로 바꾸는 경우가 일반적이지만 편하니까 초반에는 쓰겠다고 하는구만
 
