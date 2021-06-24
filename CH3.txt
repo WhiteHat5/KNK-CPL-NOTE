@@ -30,4 +30,12 @@ e - displays a floating-point number in exponential format
   - p indicates digits after the decimal point (default is 6)
   - If p is 0, decimal point is not displayed
 
-f - 
+f - display a floating-point number in fixed decimal format
+  - p has the same meaning as e specifier
+
+g - displays a floating-point number in either exponential format or fixed decimal format, depending on the number's size.
+  - p indicates the maximum number of significant digits to be displayed.
+  - not show trailing zeros
+  - 소수점 뒤에 숫자가 없으면 소수점도 안 보여줌 
+
+
