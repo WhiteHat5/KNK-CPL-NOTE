@@ -17,3 +17,17 @@ conversion Specifier's general form
 - The value is right-justified (오른쪽에 붙어서 나오고 왼쪽에 채울 숫자가 없으면 공백)
 - m은 최소한의 숫자만을 의미하므로 m을 넘는 자리수가 나오면 그냥 그대로 출력된다.(최대를 제한하는 것은 아니다)
 - m 앞에 마이너스 사인을 붙이면 left-justified 상태가 되어 왼쪽에 붙어서 나오고 오른쪽은 공백으로 채워진다
+
+- the precision, p, have multiple meanings depend on X
+- the conversion specifier, X, indicates which conversion shold be applied to the value before it is printed
+
+--COMMON TYPE OF X--
+d - display an integer in decimal form
+  - p indicates the minimum number of digits to display, default is 1
+  - p가 m과 다른 점은 p의 경우 채울 숫자가 모자라면 남은 공간을 공백이 아닌 0으로 채운다. 84를 %.4p로 출력하면 0084로 출력한다는 소리
+  
+e - displays a floating-point number in exponential format
+  - p indicates digits after the decimal point (default is 6)
+  - If p is 0, decimal point is not displayed
+
+f - 
