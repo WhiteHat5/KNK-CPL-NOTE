@@ -1,0 +1,19 @@
+printf function 에 대하여 알아보자
+
+Conversion Specifier
+printf function에서 formatted string 안에 들어있는 형태로 나오며 printf에서 지정된 변수의 자리를 표시하고 출력형태를 정의하는 역할을 가지고 있다.
+변수보다 conversion specifier가 많으면?
+--> 변수의 개수만큼 올바르게 출력된 다음에 의미없는 값이 출력된다.
+변수가 적으면?
+-->  conversion specifier의 개수만큼만 출력되고 그 이후의 변수들은 출력이 되지 않는다
+conversion specifier와 변수의 타입이 다르면?
+--> conversion specifier의 타입에 맞추어 출력되나 이는 의미없는 값이 된다
+
+conversion Specifier's general form
+%m.pX (m and p are integer constants and X is a letter)
+- Both m and p are optional; if p is omitted, the period is also omitted.
+
+- the minimum field width, m, specifies the minimum number of characters to print
+- The value is right-justified (오른쪽에 붙어서 나오고 왼쪽에 채울 숫자가 없으면 공백)
+- m은 최소한의 숫자만을 의미하므로 m을 넘는 자리수가 나오면 그냥 그대로 출력된다.(최대를 제한하는 것은 아니다)
+- m 앞에 마이너스 사인을 붙이면 left-justified 상태가 되어 왼쪽에 붙어서 나오고 오른쪽은 공백으로 채워진다
