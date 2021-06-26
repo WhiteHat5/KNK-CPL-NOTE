@@ -1,0 +1,10 @@
+EXPRESSIONS 
+
+Variables and constants are the simplest expressions.
+A variable represents a value to be computed as the program runs; a constant represents a value that doesn't change.
+Complicated expressions apply operators to operands.
+
+Type of basic operators
+- arithmetic operators (+,-,*,/)
+- relational operators(< , >)
+- logical operators (&, ||, ...)
