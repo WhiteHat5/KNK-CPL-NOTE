@@ -8,3 +8,19 @@ Type of basic operators
 - arithmetic operators (+,-,*,/)
 - relational operators(< , >)
 - logical operators (&, ||, ...)
+
+unary operators
+- + (like +1)
+- - (like -1)
+
+binary operators
+- +, -, *, / ,%
+- allow either integer or floating-point operands (% is an exception)
+- when integer and float type operands are mixed, the result will have type float
+- / 연산자는 연산대상이 모두 정수일 경우 나눗셈 후 나머지를 버린다
+- % 연산자는 두 항 모두 정수일 때만 컴파일이 된다.
+- /와% 연산자의 오른쪽 값을 0으로 하면 컴파일 결과를 예측할 수 없다.
+- /와 % 연산자의 연산대상이 하나는 양수이고 하나는 음수일 경우
+  - C89에서는 나누기 연산이 올림처리될 지 아니면 버림 처리될지 알 수 없다. 
+  - C99에서는  / 연산은 0에 가까운 값으로 반올림되고 % 연산의 결과값은 앞의 연산대상의 부호를 따른다. 
+
