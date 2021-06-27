@@ -32,4 +32,5 @@ C는 모든 연산자에 대하여 괄호를 통하여 우선순위를 정하는
 binary arithmetic operator의 경우 left-associative, 왼쪽부터 연산을 하게 되어있다.
 unary arithmetic operator의 경우 right-associative, 오른쪽부터 연산을 한다.
 
+<ASSIGNMENT OPERATORS>
 
