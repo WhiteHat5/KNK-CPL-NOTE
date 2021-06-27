@@ -34,3 +34,18 @@ unary arithmetic operator의 경우 right-associative, 오른쪽부터 연산을
 
 <ASSIGNMENT OPERATORS>
 
+simple assignment
+- = operator
+effect of the assignment v = e
+- evaluate the expression e 
+- and copy its value into v
+- If v and e have different types, the value of e is converted to the type of v
+- = 는 C언어에서 연산자이다. 따라서 연산의 결과도 존재하는데 v=e 연산의 결과는 =연산 후의 v의 값이다
+- = assignment is right-assosiative, which means i = j = 0; is  equal to i = (j = 0);
+
+Lvalues
+- assignment operator requires an lvalue as its left operand.
+- lvalue represents an object stored in computer memory, not a constant or the result fo a computation
+- 변수같은 건 lvalue이지만 연산식같은 건 lvalue가 아니다
+
+
