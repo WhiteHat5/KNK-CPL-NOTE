@@ -27,3 +27,9 @@ binary operators
 연산자의 우선순위와 연관성
 C는 모든 연산자에 대하여 괄호를 통하여 우선순위를 정하는 것을 허용하고 있다.
 괄호가 없으면 연산우선순위 규칙을 통해서 우선순위를 정한다.
+
+연산우선순위가 같을 경우 associativity를 기준으로 연산순서를 정한다. 
+binary arithmetic operator의 경우 left-associative, 왼쪽부터 연산을 하게 되어있다.
+unary arithmetic operator의 경우 right-associative, 오른쪽부터 연산을 한다.
+
+
