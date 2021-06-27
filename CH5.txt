@@ -1,1 +1,11 @@
+5 Selection Statements
+
+Logical Expressions 
+- 다른 프로그래밍 언어에서는 i<j; 같은 표현식이 참 또는 거짓 타입을 가지고 있으나 C에서는 1또는 0이다
+
+Relational Operators
+- < > <= >=
+- 비교 연산자는 산술 연산자보다 우선순위가 낮다
+- left-assocative
+
 
