@@ -6,6 +6,38 @@ Logical Expressions
 Relational Operators
 - < > <= >=
 - 비교 연산자는 산술 연산자보다 우선순위가 낮다
-- left-assocative
+- left-associative
+
+Equality Operators
+- == (equal) != (not equal)
+- left-associative and produce either 0 or 1
+- have lower precedence than relational operators
+- 정수 값을 반환하는 것을 이용해 정수값을 결과로 가지는 연산식을 구성하는 등 응용을 할 수 있지만 이러한 시도는 코드를 이해하기 어렵게 만드므로 지양하는 것이 좋다
+
+Logical operators
+- ! (negation) && (and) || (or)
+- produce either 0 or 1
+- 논리 연산자는 피연산자가 참, 거짓임을 판단하는 것이 아니라 0인지 0이 아닌지를 기준으로 결과를 반환한다
+- Both && and || operators provide 'short-circuit' evaluation; If the value of the expression can be deduced from the vaoue of the left operand alone, then right operand isn't evaluated
+- ! operator is right-associative, && and || operators are left-associative
+
+The if statement
+- if (expression) statement
+- if expression has non-zero value, the statement is executed
+
+Compound statements
+- {staements}
+- staements 를 중괄호로 둘러싸서 컴파일러가 하나의 statement로써 처리할 수 있도록 한다
+
+The else Clause
+- if (expression) statement else statement
+- The statement that follows the word else is executed if the expression in parentheses has the value 0
+
+Cascaded if Statements
+- if 문 뒤에 else 문 뒤에 if 문 안에 else 문 뒤에... 이걸 반복함으로써 여러가지 조건을 테스트하고 조건에 맞을 경우 바로 반복문을 종료하고 원하는 구문을 실행시킬 수 있다
+
+The "Dangling else" problem
+- else는 아직 else문과 짝을 이루지 못한 '가장 가까운' if문과 짝을 이루므로 어떤 if문과 짝을 이루었는지 잘 알고 있을 필요가 있다
+- if 문 뒤에 중괄호를 덧붙임으로써 if 와 else의 관계를 명확히 하는 것으로 이러한 유형의 문제를 피할 수 있다. (적절한 괄호 사용이 중요하다)
 
 
