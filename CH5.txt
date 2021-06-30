@@ -40,4 +40,11 @@ The "Dangling else" problem
 - else는 아직 else문과 짝을 이루지 못한 '가장 가까운' if문과 짝을 이루므로 어떤 if문과 짝을 이루었는지 잘 알고 있을 필요가 있다
 - if 문 뒤에 중괄호를 덧붙임으로써 if 와 else의 관계를 명확히 하는 것으로 이러한 유형의 문제를 피할 수 있다. (적절한 괄호 사용이 중요하다)
 
+Conditional Expressions
+- The conditional operator consists of two symbols(? :), which must be used together
+- expr1 ? expr2 : expr3
+- expr1 is evaluated; if its value isn't zero, then expr2 is evaluated, and its value is the balue of the entire conditional expression
+- if the value of expr1 is zero, expr3 is evaluated
+- return 문이나 printf statement의 인자처럼 한 expression만 들어갈 수 있는 곳에 조건식을 넣고 싶을 때 유용하다
+
 
