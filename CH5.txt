@@ -47,4 +47,11 @@ Conditional Expressions
 - if the value of expr1 is zero, expr3 is evaluated
 - return 문이나 printf statement의 인자처럼 한 expression만 들어갈 수 있는 곳에 조건식을 넣고 싶을 때 유용하다
 
+Bool
+- C99에서는 _Bool 타입을 지원 (Unsigned int 타입과 같지만 0과 1만 할당할 수 있다는 점이 다름)
+- <stdbool.h> 헤더를 이용해 bool, true, false 같은 키워드를 사용할 수 있다
+
+switch statement
+- 조건문과 케이스 라벨이 모두 정수여야 한다 (문자들은 정수로 취급되므로 사용할 수 있다
+- break 문을 쓰지 않으면 한 케이스가 실행되었을 때 그 케이스부터 마지막 케이스까지 switch문이 종료되기 전 까지 모든 케이스가 실행된다
 
