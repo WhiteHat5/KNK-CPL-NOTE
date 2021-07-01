@@ -7,17 +7,14 @@ int main()
     printf("Enter a 24-hour time: ");
     scanf("%d :%d",&hour ,&min);
     printf("Equivalent 12-hour time: ");
-    if(hour>=13)
+    
+    if (hour>=12)
     {
-        printf("%d:%.2d PM",hour-12,min);
-    }
-    else if(hour>0)
-    {
-        printf("%d:%.2d AM",hour,min);
+        printf("%2d:%.2d PM",hour == 12 ? 12 : hour-12 , min);
     }
     else
     {
-        printf("12:%.2d PM",min);
+        printf("%2d:%.2d", hour == 0 ? 12 : hour, min);
     }
 
     return 0;
