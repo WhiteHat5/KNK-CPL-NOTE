@@ -35,3 +35,9 @@ The Comma Operator
 - has the form
   expr1 , expr2
 - expr1 and expr2 can be any expressions
+- evaluated in two steps
+  - expr1 is evaluated and its value is discarded
+  - expr2 is evaluated and its value is the value of the entire expression
+- left-associative
+- comma operator는 Compound statement에서 중괄호가 여러 개의 statement를 하나로 묶어주듯 여러 개의 expression을 하나로 묶는 일을 한다
+
