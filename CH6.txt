@@ -1,0 +1,10 @@
+The while statement
+- has the form
+  while (expression) statement
+- The expression in side the parentheses is the controlling expression and the statement after the parenteses is the loop body
+
+When while statement is executed
+- controlling expression is evaluated
+- if it is non-zero, then the loop body is executed
+- controlling expression is evaluated again until it eventually has the value of zero
+
