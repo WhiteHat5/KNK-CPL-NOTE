@@ -7,4 +7,13 @@ When while statement is executed
 - controlling expression is evaluated
 - if it is non-zero, then the loop body is executed
 - controlling expression is evaluated again until it eventually has the value of zero
+--> loop terminates when the controlling expression has the vale of zero
+! controlling expression is evaluated before the loop body --> the loop body may not be executed at all
+
+The do statement
+- essentially just a while statement whose controlling expression is tested after the loop body is executed
+- has the form
+  do statement while (expression)
+- execution of do statement terminates when the controlling expression has the value of zero after the execution of the loop body
+! while 문과 헷갈리기 쉬우므로 항상 statement 를 중괄호로 묶어두는 것이 좋다
 
