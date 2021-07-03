@@ -41,3 +41,21 @@ The Comma Operator
 - left-associative
 - comma operator는 Compound statement에서 중괄호가 여러 개의 statement를 하나로 묶어주듯 여러 개의 expression을 하나로 묶는 일을 한다
 
+The break Statement
+- useful for writing loops in which the exit point is in the middle
+- transfers control out of the innermost enclosing while, do, for, or switch statement
+
+The continue Statement
+- transfers control just before the end of the loop body (control remains inside the loop)
+- limited to loops (break문은 swith문에서 쓸 수 있지만 continue문은 loop에서만 쓸 수 있다) *loop: while, do, for
+
+The goto statement
+- statement가 label을 가지고 있다면 어디든지 갈 수 있다
+! C99 places an additional restriction on the goto statement: it can't be used to bypass the declaration of a variable-legth array
+- label has the form
+  identifier : statement
+- goto has the form
+  goto identifier ;
+- transfers control to the statement that follows the identifier (must be in the same function as the goto statement)
+- 사실 다른 탈출문이 이걸 대체할 수 있기 때문에 많이 쓰이지는 않지만 여러겹의 겹쳐진 반복문을 한 번에 탈출할 때 쓰기 편하다
+
