@@ -59,3 +59,7 @@ The goto statement
 - transfers control to the statement that follows the identifier (must be in the same function as the goto statement)
 - 사실 다른 탈출문이 이걸 대체할 수 있기 때문에 많이 쓰이지는 않지만 여러겹의 겹쳐진 반복문을 한 번에 탈출할 때 쓰기 편하다
 
+The Null Statement
+- devoid of symbols except for the semocolon at the end (아무것도 안 쓰고 세미콜론만 쓰면 Null Statment 가 됨)
+- can make a loop with empty body (보통 혼란을 피하기 위해 null statement 도 한 줄 로 치고 주석 등으로 표시해준다)
+! null statement라는 것을 더 강조하기 위해 continue; 나 {} 를 써서 statement 가 들어갈 자리를 메우는 경우도 있다
