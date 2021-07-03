@@ -17,3 +17,21 @@ The do statement
 - execution of do statement terminates when the controlling expression has the value of zero after the execution of the loop body
 ! while 문과 헷갈리기 쉬우므로 항상 statement 를 중괄호로 묶어두는 것이 좋다
 
+The for statement
+- has the form
+  for ( expr1 ; expr2 ; expr3 ) statement
+- expr1 is an initialization step that's performed only once
+- expr2 controls the loop termination
+- expr3 is an operation to be performed at the end of each loop iteration
+! since expr1 and expr3 are executed as statements, their values are irrelevant; only useful for their side effects
+
+Ommiting expressions in a for statement
+- 3가지 표현식 중 어느 것이든지 생략할 수 있으며 controlling expression은 생략하면 항상 참의 값을 가져 반복문이 종료되지 않는다 (loop body 안에서 반복문을 종료할 수단을 마련해야 한다)
+- C99에서는 expr1에서 선언을 할 수 있다
+  - 선언된 변수는 반복문 안에서만 적용된다
+  - 두 가지 이상의 변수를 expr1에서 한꺼번에 선언할 수도 있다 (같은 타입일 경우)
+
+The Comma Operator
+- has the form
+  expr1 , expr2
+- expr1 and expr2 can be any expressions
