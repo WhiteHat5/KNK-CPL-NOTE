@@ -40,4 +40,26 @@ Reading and Writing Integer
 Floating Types
 - three floating types (float, double, long double)
 - float 에서 long double 로 갈수록 정밀도가 증가하지만 얼마나 정밀한지는 C에서는 정의하지 않고 있다
-! reference "https://docs.oracle.com/cd/E19957-01/800-7895/800-7895.pdf"
+! reference "https://docs.oracle.com/cd/E19957-01/800-7895/800-7895.pdf" (더럽게 복잡함 ㄷㄷ...)
+- normalized
+  - d.dddd X b^n 의 형태에서 첫번째 자릿수가 0이 아닌 형태를 말한다
+- <floats.h> 헤더는 floating type의 특성을 정의해놓고 있다
+- C99에서는 기존의 floating type을 real floating types라 하고 complex types라는 다른 타입도 제공하고 있다 (float _Complex, double _Complex, long double _Complex)
+
+Floating constants
+- must contain a decimal point and/or an exponent
+- exponent indicates the power of 10 by which the number is to be scaled
+  57.0E-2 .57e+2
+- default is double (f for float, l for long double)
+- C99에서는 0x를 붙임으로써 hexadicimal floating-point constant(!) 를 표현할 수 있다고 한다. 많이 쓰지는 않는다고 하지만...
+
+Reading or writing Floating-point number
+- double
+  - put the letter l in front of e, f, or g
+  %lf %le %lg
+! scanf 에서는 l을 붙이지만 printf에서는 l을 붙이지 않는다 (C99에서는 붙이는 것이 허용되지만 이것도 필수적인 것은 아니다)
+- long double
+  - put the letter L in front of e, f, or g
+  %Lf %Le %Lg
+
+Character types
