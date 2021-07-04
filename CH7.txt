@@ -36,3 +36,8 @@ Reading and Writing Integer
 - short integer; put the letter h in front of d, o, u, or x
 - long integer; put the letter l in front of d, o ,u, or x
 - long long integer; put the letter ll in front of d, o, u, or x (C99 only)
+
+Floating Types
+- three floating types (float, double, long double)
+- float 에서 long double 로 갈수록 정밀도가 증가하지만 얼마나 정밀한지는 C에서는 정의하지 않고 있다
+! reference "https://docs.oracle.com/cd/E19957-01/800-7895/800-7895.pdf"
