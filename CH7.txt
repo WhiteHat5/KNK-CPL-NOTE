@@ -91,3 +91,15 @@ Reading and Writing Characters
 getchar and putchar
 putchar(ch); 로 ch 안에 저장되어 있는 문자 값을 출력
 getchar(); 로 문자 하나를 읽고 반환 (정수형으로 반환됨)
+
+Type conversion
+- 컴퓨터 내에서의 연산은 같은 크기의 같은 자료형의 수끼리만 연산이 가능하지만 C에서는 다른 자료형끼리도 연산이 가능하다
+- implicit conversion 은 프로그래머의 개입없이 컴파일러가 알아서 형변환을 하는 경우를 의미한다
+- explicit conversion은 cast operator를 사용해서 직접 형변환을 하는 경우다
+
+implicit conversion이 일어나는 경우
+- 산술이나 논리연산에서 다른 형이 쓰인 경우
+- 할당 연산자의 우측표현식이 왼쪽 변수와 형이 다른 경우
+- 함수의 인자와 변수의 형이 맞지 않는 경우
+- return 문의 반환값의 형이 함수의 반환값의 형과 다른 경우
+
