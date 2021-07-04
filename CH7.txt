@@ -1,0 +1,38 @@
+Integer types
+- value of an integer type is a whole number
+- signed and unsigned integer (leftmost bit of a signed integer is 0 if it is positive or zero)
+! default is signed
+- short and long; int 타입이 차지하는 메모리 크기가 차이남
+- short unsigned 처럼 섞어서 쓸 수도 있으며 이때 순서는 상관없다 (short unsigned int === unsigned short int)
+- int를 아예 생략할 수도 있다 (short int === short)
+
+- short int , int, long int 가 차지하는 메모리 크기는 기계마다 다르나 일반적인 규칙은 있다
+  - short int 는 항상 int 보다 작거나 같다
+  - long int 는 항상 int 보다 크거나 같다
+  ! <limits.h> 헤더에는 각 타입의 최대,최소값이 나와있다; 표준라이브러리의 일부이다
+! C99에서는 long보다 긴 long long 도 제공한다 (최소 64비트)
+! 컴파일러에 따라 128비트크기의 정수타입을 사용하기도 한다 (implemetation-defined)
+
+integer constants
+- Decimal, Octal (start with 0) , Hexadecimal (begin with 0x; the letters can be upper or lower case)
+- 어떤 진법으로 표현되든 메모리에는 항상 이진수로 저장되므로 저장되는 것에는 차이가 없다
+- type of decimal integer is usually int; 너무 크면 long int, 더 크면 unsigned long int 로 저장됨
+- octal, hexadecimal 은 unsigned int를 한 번 거친다는 차이점이 있다
+- force the compiler to treat a constant as a long integer
+  - follow it with the letter L(or l)
+  - 15L , 0377L, 0x7fffL
+- force the compiler to treat a constant as an unsigned integer
+  - U를 붙인다
+  - 15U, 0377U
+- U와 L을 동시에 붙일 수도 있고 순서도 상관없다
+- LL for long long int in C99
+
+Integer Overflow
+- integer is too large to represent
+- overflow of signed integer is undefined, but which of unsigned integer is defined (modulo 2^n)
+
+Reading and Writing Integer
+- unsigned integer; use the letter u, o, or, x instead of d
+- short integer; put the letter h in front of d, o, u, or x
+- long integer; put the letter l in front of d, o ,u, or x
+- long long integer; put the letter ll in front of d, o, u, or x (C99 only)
