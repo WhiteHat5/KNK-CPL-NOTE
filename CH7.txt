@@ -63,3 +63,11 @@ Reading or writing Floating-point number
   %Lf %Le %Lg
 
 Character types
+- char
+- a variable of type char can be assigned any single character
+- character constants are enclosed in single quotes ''
+
+Operation in Characters
+- C treats characters as small integers
+- char을 정수로 다룰 수 있기 때문에 signed char과 unsigned char로 나뉜다
+
