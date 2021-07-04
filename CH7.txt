@@ -71,3 +71,23 @@ Operation in Characters
 - C treats characters as small integers
 - char을 정수로 다룰 수 있기 때문에 signed char과 unsigned char로 나뉜다
 
+Escape sequence
+- character escape amd numeric escape
+- character escape은 \n이나 \t 처럼 아스키 코드에 나와있으나 키보드로 칠 수 없다든지 아니면 보이지 않는다든지 그런 문자들을 위해 있는 것이다
+- numeric escape
+  - octal escape sequence
+    \33 \033 (꼭 0이 들어갈 필요는 없다; 뒤의 숫자는 8진수이다)
+  - hexadecimal escape sequence
+    \x1b \x1B (x는 반드시 들어가야 한다; 뒤의 숫자는 16진수이다)
+- #define을 통해 이름을 부여하는 것도 좋은 방법
+  #define ESC '\33' /*ASCII esacpe character*/
+- <ctype.h> 헤더의  toupper() 함수로 대문자로 바꿀 수 있다
+
+Reading and Writing Characters
+- %c conversion specifier
+- 문자를 읽을 때는 공백을 건너뛰지 않기 때문에 공백을 건너뛰고 싶다면 scanf함수의 입력문자열 안에 공백을 넣을 필요가 있다
+  " %c"
+
+getchar and putchar
+putchar(ch); 로 ch 안에 저장되어 있는 문자 값을 출력
+getchar(); 로 문자 하나를 읽고 반환 (정수형으로 반환됨)
