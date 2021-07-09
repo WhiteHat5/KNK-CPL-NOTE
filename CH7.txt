@@ -103,3 +103,27 @@ implicit conversion이 일어나는 경우
 - 함수의 인자와 변수의 형이 맞지 않는 경우
 - return 문의 반환값의 형이 함수의 반환값의 형과 다른 경우
 
+Usual arithmetic conversion
+- narrower type 이란 같은 수를 나타내는데 드는 비트가 적은 형식을 의미한다
+- promotion은 narrower type으로 타입이 바뀌는 것이다
+- binary operator 에서는 두 항 중 narrower type 의 형을 따른다
+
+Assignment conversion
+- 정수형 상수를 float 변수에 할당하는 것은 문제가 되지 않지만, 그 반대는 정밀도를 희생하거나 아예 다른 결과가 나온다
+
+Casting
+Implicit conversion 말고 직접 변수형을 지정한다
+- has the form
+  (type-name) expression
+- unary operator
+
+Type definitions
+e.g. typedef int Bool /* Bool is now same as int */
+
+sizeof operator
+- The sizeof operator allowas a program to dertermine how much memory is required to store values of a particular type
+- has the form
+  sizeof (type-name)
+  - value is an unsigned integer representing the number of bytes required to store a value belonging to type-name
+- 괄호 안에 들어가는 내용이 표현식이면 괄호는 필요없으나 산술연산이 포함된 연산식이면 어차피 괄호가 필요하므로 그냥 괄호를 쓰는 습관을 들이자
+
