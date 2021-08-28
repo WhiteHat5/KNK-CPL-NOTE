@@ -10,8 +10,8 @@ Type of basic operators
 - logical operators (&, ||, ...)
 
 unary operators
-- + (like +1)
-- - (like -1)
++ (like +1)
+- (like -1)
 
 binary operators
 - +, -, *, / ,%
@@ -60,7 +60,11 @@ Increment and decrement operators
 - evaluating the expression i++ produces the result i, but causes i to be incremented afterwards (increment later)
 - C는 postfix increment/decrement operators 가 언제 값을 변화시키는지 정의하고 있지 않다. 다음 statement 전에 적용된다는 것만 확실하다.
 * the postfix version of ++ and -- have higher precedence than unary + and - and are left-assocative; the prefix version have lower precedence and right-assocative
-
+** ++++i 가 C에서는 허용되지 않지만 C++에서는 허용되는데 이는 두 가지 이유 때문이다
+  - ++연산은 operand로 lvalue를 필요로 한다
+  - C에서는 ++의 결과값이 기존 operand에서 1을 더한 값이고 C++에서는 결과값이 기존 operand에서 1을 더해서 update한 lvalue라고 한다
+  * 결론은 C와 C++는 하나가 다른 것에 속한 것이 아니라 다른 언어라는 점을 짚고 넘어가는 것이 좋겠다
+  
 Expression Evaluation
 - Apply precedence first, and take associativity into account
 
