@@ -1,7 +1,7 @@
 The while statement
 - has the form
   while (expression) statement
-- The expression in side the parentheses is the controlling expression and the statement after the parenteses is the loop body
+- The expression inside the parentheses is the controlling expression and the statement after the parentheses is the loop body
 
 When while statement is executed
 - controlling expression is evaluated
