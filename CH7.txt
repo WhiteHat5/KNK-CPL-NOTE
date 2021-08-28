@@ -36,6 +36,7 @@ Reading and Writing Integer
 - short integer; put the letter h in front of d, o, u, or x
 - long integer; put the letter l in front of d, o ,u, or x
 - long long integer; put the letter ll in front of d, o, u, or x (C99 only)
+* C에서는 부호가 있는 8진법 또는 16진법 정수를 printf함수로 출력하는 것을 지원하지 않기 때문에 만약 그렇게 하고 싶으면 음수 테스트를 자체적으로 한 다음에 - 부호를 붙여야 한다
 
 Floating Types
 - three floating types (float, double, long double)
@@ -51,7 +52,8 @@ Floating constants
 - exponent indicates the power of 10 by which the number is to be scaled
   57.0E-2 .57e+2
 - default is double (f for float, l for long double)
-- C99에서는 0x를 붙임으로써 hexadicimal floating-point constant(!) 를 표현할 수 있다고 한다. 많이 쓰지는 않는다고 하지만...
+* C99에서는 0x를 붙임으로써 hexadicimal floating-point constant(!) 를 표현할 수 있다고 한다. 많이 쓰지는 않는다고 하지만...
+** 아주 큰 수나 정밀도가 필요한 수를 다룰 때 사용하며 <float.h> 헤더에 매크로로 포함된 수 중에 있다고 한다.
 
 Reading or writing Floating-point number
 - double
