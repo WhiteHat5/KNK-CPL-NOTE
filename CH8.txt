@@ -1,0 +1,4 @@
+Arrays
+
+<One-dimensional arrays>
+- all of elements have the same type
