@@ -29,3 +29,16 @@
 <Function declaration>
 - 함수 정의를 함수 뒤에 놓을 수도 있지만 그러면 컴파일러가 처음 함수를 봤을 때 함수에 대한 정보가 없어 정수형으로 가정하고 프로그램을 실행하는데 이후에 함수의 타입이 정수형이 아니면 에러메세지를 띄우게 된다
 - 이를 막기 위해 함수의 선언을 먼저 해놓고 정의를 뒤에 하는 경우가 있다.
+- 함수의 prototype은 전달인자의 개수, 유형 그리고 반환값의 유형을 main함수에 알려준다
+* prototype에서는 전달인자의 이름을 생략할 수 있다
+** C99에서는 함수 선언이나 정의 없이 함수를 호출하는 것은 에러메세지를 띄운다
+
+<arguments>
+- 함수가 호출되면 argument의 값이 parameter에 복사된다. 이는 복사된 값이기 때문에 parameter의 변화는 argument의 값에 영향을 미치지 않는다.
+- 이런 방식의 장점은 parameter를 함수 내에서 마음대로 수정할 수 있다는 것이다
+- 단점은 전달인자를 변화시키는 함수를 작성하기가 까다롭다는 점이다
+
+<Argument Conversions>
+- C는 전달인자와 매개변수의 유형이 같지 않은 경우에도 호출을 허용한다
+- 만약 함수가 선언이 되어 있다면 전달인자의 값이 매개변수의 유형으로 바뀐다
+- 그렇지 않으면 default argument promotion을 하여 float는 double로, char과 short는 int 로 바뀐다 (integral promotion for C89, integer promotion for C99)
