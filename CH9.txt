@@ -1,0 +1,5 @@
+<Functions>
+
+<Defining and calling functions>
+- return type: the type of data that the function returns each time ti's called
+- parameters: input that will be supplied when the function is called (type must be declared for EACH parameter)
