@@ -86,3 +86,8 @@ exit(EXIT_FAILURE); //abnormal termination
 - return(expression); 과 exit(expression); 은 main 함수에 있을 경우 같다
 - 다른 점은 return 은 main에 있을 때만 프로그램을 종료시키지만 exit은 어느 함수에 있든 프로그램을 종료시킨다는 점이다
 
+<Recursion>
+- 자기를 호출하는 걸 재귀라고 한다
+- 재귀함수는 끊임없이 자기를 호출하는 걸 막기위해 정지 포인트를 만들어놓아야 한다(근데 이건 반복문이면 다 해당되는 거 아닌감)
+- 분할점령에 많이 쓰이는데 큰 문제를 작은 문제로 나눈 후 같은 알고리즘을 적용시키는 방식을 말한다.
+- 퀵 정렬이 그 예
