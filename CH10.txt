@@ -39,4 +39,3 @@
   - A type name can't be used until it's been defined
   - A variable can't be used until it is declared
   - A function should defined or delared before its first call (C89에서는 필수사항이 아니지만 지켜서 나쁠 게 없으니까 지키라고 하네용)
-- 
