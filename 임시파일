@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include<stdlib.h>
 
 #define STACK_SIZE 100
 
-char operands[STACK_SIZE];
+int operands[STACK_SIZE];
 int top = 0;
 
 bool is_empty(void);
@@ -11,6 +12,7 @@ char pop(void);
 void push(char);
 void read_expression(void);
 void print_result(void);
+int convert_num(char);
 
 int main(void){
     for(;;){
@@ -22,13 +24,26 @@ int main(void){
 void read_expression(void)
 {
     char ch;
+    int first, second;
     printf("Enter an RPN expression: ")
     while((ch = getchar()) != '\n'){
         if(ch >= '0' && ch <= '9')
-            push(ch);
+            push(convert_num(ch));
+        else if(ch == '+')
+            push(pop() + pop());
         else if(ch == '*')
             push(pop() * pop());
-        else if()
-        
+        else if(ch == '/'){
+            second = pop();
+            first = pop();
+            push(first / second);
+        }
+        else if(ch == '-'){
+            second = pop();
+            first = pop();
+            push(first - second);
+        }
+        else
+            exit(0);
     }
 }
