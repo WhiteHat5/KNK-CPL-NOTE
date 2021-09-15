@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define STACK_SIZE 100
+
+char operands[STACK_SIZE];
+int top = 0;
+
+bool is_empty(void);
+char pop(void);
+void push(char);
+void read_expression(void);
+void print_result(void);
+
+int main(void){
+    for(;;){
+        read_expression();
+        print_result();
+    }
+}
+
+void read_expression(void)
+{
+    char ch;
+    printf("Enter an RPN expression: ")
+    while((ch = getchar()) != '\n'){
+        if(ch >= '0' && ch <= '9')
+            push(ch);
+        else if(ch == '*')
+            push(pop() * pop());
+        else if()
+        
+    }
+}
