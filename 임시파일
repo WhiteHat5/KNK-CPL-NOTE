@@ -50,7 +50,7 @@ int main(void)
 void clear_digits_array(void)
 {
     for(int i = 0; i<4; i++){
-        for(int j; j < MAX_DIGITS*4; j++){
+        for(int j = 0; j < MAX_DIGITS*4; j++){
             digits[i][j] = ' ';
         }
     }
@@ -76,7 +76,7 @@ void process_digit(int digit, int position)
 void print_digits_array(void)
 {
     for(int i = 0; i<4; i++){
-        for(int j; j < MAX_DIGITS*4; j++){
+        for(int j = 0; j < MAX_DIGITS*4; j++){
             printf("%c" , digits[i][j]);
         }
         printf("\n");
