@@ -1,0 +1,36 @@
+<POINTERS>
+
+<Pointer Variables>
+- main memory is divided into bytes
+- Each byte has a unique address
+- the address of the first byte is said to be the address of the variable (두 개 이상의 바이트를 차지하는 변수일 경우)
+- addresses are stored in pointer variables
+
+<Declaring Pointer Variables>
+- has the form
+int *p
+- 포인터 p가 int type의 메모리 공간을 가리키고 있다는 것을 나타낸다 (메모리 공간이 꼭 변수에 속해있을 필요는 없다)
+- C requires that every pointer variable points only to objects of a particular type (the referenced type)
+
+<The address and indirection operators>
+- & operator (address operator)
+  - &x is the address of x in memory
+- * operator (indirection operator)
+  - If p is a pointer, then *p represents the object to which p currently points
+  
+<The address operator>
+- To initialize a pointer, assign it the address of some variables (or more generally, lvalues)
+int i, *p;
+p = &i;
+- 선언과 동시에 초기화하는 것도 가능하다
+* 변수의 선언을 하는 줄에 변수를 가리키는 포인터를 선언하고 초기화까지 하는 것도 가능...은 한데 이걸 쓰나?
+int i, *p = &i;
+
+<The indirection operator>
+- to access what's stored in the object
+- p가 i를 가리키고 있는 동안은 *p와 i는 같다
+  - *p가 i와 같은 값을 가진다
+  - *p의 값을 변경하면 i의 값도 똑같이 바뀐다
+* 포인터가 초기화되지 않은 상태에서 값을 할당하면 문제가 생길 수 있다. 포인터가 운영체제 쪽 메모리를 가리키고 있기라도 하면 바로 프로그램 다운되는겨
+
+<Pointer assignment>
