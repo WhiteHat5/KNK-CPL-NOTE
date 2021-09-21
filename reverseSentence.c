@@ -1,39 +1,51 @@
 #include <stdio.h>
+#define N 100
 
 int main()
 {
     char terminating_character;
-    char sentence[40];
+    char sentence[N];
     const char charset[3] = {'.' , '!', '?'};
-    int end, i;
+    char *p = sentence, *q;
     
     printf("Enter a sentence: ");
-    for(i=0; i<40; i++){
-        sentence[i] = getchar();
-        if(sentence[i] == charset[0] || sentence[i] == charset[1] || sentence[i] == charset[2]){
-            terminating_character = sentence[i];
-            end = i;
-            break;
-        }
-    }
-    while(getchar()!='\n');
+	
+	while((*p = getchar()) != '.' && *p != '!' && *p != '?')
+	{
+		if(p == sentence + N){
+			printf("Too long\n");
+			return 0;
+		}
+		p++;
+	}
+	
+	terminating_character = *p;
     
-   
     printf("Reversal of sentence: ");
-    do{
-        if(sentence[i] == ' '){
-            for(int j = i+1 ; j < end; j++){
-                putchar(sentence[j]);
-            }
-            putchar(sentence[i]);
-            end = i;
-        }
-    } while(--i);
-   
-    for(int j=0; j<end; j++){
-        putchar(sentence[j]);
-    }
- 
+    
+	while(p >= sentence)
+	{
+		
+		while(*(--p) != ' '){
+			if(p == sentence)
+				break;
+		} //go front until it meets blank-character
+		if (p == sentence){
+			while(*p != ' ')
+				putchar(*p++);
+			break;
+		}
+		else{
+			q = p++; //q is the position of the blank just before the word about to be printed
+			while(*p != terminating_character && *p != ' ')
+				putchar(*p++); 
+			putchar(' ');
+			p = q;
+	}
+		}
+		
+
     putchar(terminating_character);
+	putchar('\n');
     return 0;
 }
