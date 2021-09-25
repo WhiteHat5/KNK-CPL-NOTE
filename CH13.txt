@@ -25,7 +25,7 @@ STRINGS
 - C는 string literal을 char * 타입의 포인터로 인식하기 때문에 포인터가 쓰이는 곳에는 다 쓸 수 있다
 	- char *p; 일 때 p에 "abc"를 할당할 수 있다
 	- "abc"[1] 로 b를 나타낼 수 있다 (배열 이름처럼 사용가능하다)
-- string literal은 수정할 수 없다 (배열처럼 원소를 바꾸려고 하면 오류가 난다)
+- string literal은 배열처럼 원소를 바꾸려고 하면 오류가 난다
 
 <String literals versus character constants>
 - "a"는 포인터이고 'a'는 정수다
@@ -154,6 +154,28 @@ while (*p++ = *s2++)
 - loop terminates after the assignment so we don't need to put a null character at the end of the new string
 
 <Array of strings>
+- string의 배열을 구현하기 위해서 2차원 char 배열을 정의하고 각 행에 문자열을 할당할 수 있다
+- 이 경우 행의 길이가 문자열의 최대길이가 되어야 하므로 string의 특성상 (길이가 일정하지 않고 원소별로 차이가 큼) 공간적인 손해가 크다
+- 이를 보완하기 위해서 string을 가리키는 포인터의 1차원 배열을 정의하여 ragged array(행의 길이가 제각각인 2차원 배열) 을 구성한다
+
+<Command-line argument>
+- Command-line information is available to all programs, not just OS commands
+- 프로그램을 실행할 때 추가적인 정보를 입력해야 하는 경우가 있다 (ls 커맨드의 경우 -l 을 붙임으로써 파일들의 더 자세한 정보를 볼 수 있다)
+- To obtain access to these command-line arguments (program parameters in C)
+	- define main as a function with two parameters (customarily named argc and argv)
+int main(int argc, char *argv[])
+{
+	//main의 내용
+}
+- argc (argument count)
+	- the number of command-line arguments (including the name of program itself)
+- argv (argument vector)
+	- the array of pointers to the command-line arguments (stored in string form)
+	- argv[0] points to the name of the program
+	- argv[1] 부터 argv[argc-1]은 나머지 command-line arguments 를 가리킨다
+	* argv[argc]는 null pointer이다 (NULL 매크로로 null pointer를 나타낼 수 있다)
+
+
 
 
 
