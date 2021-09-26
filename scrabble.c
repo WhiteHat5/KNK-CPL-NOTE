@@ -1,16 +1,26 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <ctype.h> /* for toupper() function */
+#define MAX_LENGTH 20
 
-int main(void){
-    char c;
-    int value;
-    BEGIN:
-    value = 0;
+int compute_scrabble_value (const char *word);
+
+int main(void)
+{
+    char s[MAX_LENGTH];
+	
     printf("Enter a word: ");
-    while ((c=getchar())!= '\n'){
-        switch (toupper(c)){
-            case 'A': case 'E': case 'I': case 'L': case 'N': case 'O': case 'R': case 'S': case 'T': case 'U': 
+	scanf("%s", s);
+	printf("Scrabble value: %d\n", compute_scrabble_value(s));
+    return 0;
+}
+
+int compute_scrabble_value (const char *word)
+{
+	int value = 0;
+	while(*word){
+		switch(toupper(*word++)) {
+			case 'A': case 'E': case 'I': case 'L': case 'N': case 'O': case 'R': case 'S': case 'T': case 'U': 
                 value += 1;
                 break;
             case 'D': case 'G': 
@@ -31,13 +41,10 @@ int main(void){
             case 'Q': case 'Z': 
                 value += 10;
                     break;
-            default :
-                while (getchar() != '\n'); //cleaning buffer
-                printf("Enter one English word PLEASE\n");
-                goto BEGIN;
-        }
-    }
-    printf("Scrabble value: %d\n", value);
-
-    return 0;
+			default: 
+				break;
+		}
+	}
+	
+	return value;
 }
