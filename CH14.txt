@@ -1,0 +1,135 @@
+<The preprocessor>
+- directives are handled by the preprocessor
+- the preprocessor is a piece of software that edits C program just prior to the compilation
+
+<How the preprocessor works>
+- preprocessing directives: commands that begin with #
+- The #define directive
+	- defines a macro
+	- The preprocessor responds to a #define directive by storing the name of the macro together with its definition
+	- when the macro is used later in the program, the preprocessor 'expands' the macro, replacing it by its defined value
+- The #include directive
+	- open a particular file and include its contents as part of the file being compiled
+- C 프로그램은 전처리기를 한 번 거쳐서 모든 directive가 사라진 프로그램을 만든 후 이를 다시 한 번 컴파일러로 컴파일하여 오브젝트 코드로 변환한다.
+* 전처리기에서 사라진 directive의 자리는 사라지는 것이 아니라 빈 행으로 표시된다
+** 일부 컴파일러는 아예 불필요한 공백문자를 모두 없애기도 한다
+*** gcc에서는 -E 를 사용하여 전처리기 처리 결과를 볼 수 있다.
+- 전처리기는 C의 문법을 그대로 따른다는 보장이 없기 때문에 전처리기의 결과를 보는 게 버그를 찾을 때 도움이 될 때가 있다고 하네용
+
+<Preprocessing directives>
+- Macro definition
+	- #define defines a macro
+	- #undef removes a macro definition
+- File inclusion
+	- #include caused the contents of a specified file to be included in the program
+- Conditional compilation
+	- #if, #ifdef, #ifndef, #elif, #else, #endif 는 텍스트 블럭이 프로그램에 포함되거나 포함되지 않도록 할 수 있다
+- 그 외에도 #error, #line, #pragma 등이 있다
+- rules that apply to all directives
+	- begin with # (# 앞에 공백문자만 있다면 줄을 시작할 때 넣지 않아도 된다)
+	- any number of spaces and horizontal tab characters may seperate the tokens in a directive
+	- end at the first new-line character (unless explicitly continued by \)
+	- can appear anywhere in a program
+	- 주석이랑 같은 줄에 써도 된다
+
+<Simple macros>
+- its definition has a form
+#define identifier replacement_list
+- replacement_list is any sequence of perprocessing tokens
+- 매크로 정의를 보면 전처리기는 identifier가 replacement_list를 나타낸다는 것을 기억했다가 identifier가 나올 때마다 replacement_list로 대체한다
+* 매크로 정의에 = 나 ; 를 사용하는 경우 에러가 나지만 컴파일러는 전처리기가 이미 처리한 파일을 컴파일하기 때문에 매크로가 나올 때마다 잘못됐다는 것만 알고 매크로가 잘못됐다는 건 알려주지 못한다
+- 상수나 문자열을 매크로로 지정하는 경우도 있는데 이 경우의 장점은 다음과 같다
+	- 상수나 문자열의 의미를 더 잘 알 수 있다
+	- 프로그램을 수정하기 쉬워진다
+	- 오타로 인한 에러를 막아준다
+- 매크로로 아예 다른 언어처럼 만들어 버릴 수도 있다 ({,} 를 BEGIN, END 로 대체해버릴 수 있다)
+- int같은 유형을 다르게 정의할 수 있다 (type definition이 낫다고 하네용)
+- Controlling cnditional compilation (특정 매크로를 정의함으로써 전처리조건문의 조건을 조정할 수 있다. 이 경우 매크로의 내용은 굳이 없어도 상관없다는 점을 이용할 수 있다)
+* 매크로 이름은 전부 대문자로 하는 것이 일반적이지만 꼭 그래야 하는 건 아님
+
+<Parameterized Macros>
+- has the form
+#define identifier( x1, x2, ... , xn) replacement_list
+- x1, ... xn 은 매크로의 매개변수이다
+- 매크로 이름과 괄호 사이에는 아무런 공백도 없어야 한다 (공백이 있으면 simple macro처럼 단순치환하게 된다)
+- 전처리기는 매크로함수의 정의를 저장해놓았다가 프로그램 내에서 함수가 호출될 때마다 적용시킨다
+- 일반함수는 중간에 매개변수를 복사하고 하는 등 오버헤드를 필요로 한다 (오버헤드는 어떤 처리를 하기 위해 들어가는 간접적인 처리시간, 메모리 등을 말한다)
+- 그래서 매크로함수가 더 빠를 수 있다
+- type을 따지지 않기 때문에 int와 float을 비교하는 등 자유로운 연산이 가능하다 (대신 검사를 안 하기 때문에 자동으로 타입을 바꿔주지도 않는다...)
+- 매크로를 쓰면 매크로가 불릴 때마다 replacement_list를 삽입하기 때문에 컴파일할 코드 길이가 길어질 수 있다
+- 매크로를 가리키는 포인터는 없다 (전처리기에서 사라지기 때문)
+- a macro may evaluate its arguments more than once
+
+<The # operator>
+- converts a macro argument into a string literal
+- appear only in the replacement list of a parameterized macro
+* # 연산자는 입력받은 문자 그대로 string으로 만든다. 즉, 변수를 # 연산자를 통해 문자열로 만들면 변수의 값이 나오는 것이 아니라 변수의 이름을 문자열로 변환한 값이 된다
+
+<The ## operator>
+- 'paste' two tokens together to form a single token
+#define MK_ID(n) i##n
+int MK_ID(1), MK_ID(2) ; // 원래 프로그램
+int i1, i2 ; // 전처리기 처리 후 수정된 프로그램
+- 내용은 거의 비슷한데 타입만 다른 함수 등을 작성할 때 같은 함수에서 유형만 매크로로 바꿀 수 있는데 이 경우 함수 이름이 같으면 안되니 ##연산자로 다른 이름을 각각 지정해 줄 수 있다
+
+<General properties of macros>
+- 매크로 내용은 다른 매크로 이름을 포함할 수 있다 (전처리기는 모든 매크로 이름을 매크로 내용으로 바꿀 때까지 프로그램을 계속 스캔한다)
+- The preprocessor replaces only entire tokens, not portion of tokens (SIZE라는 매크로가 있으면 BUFFER_SIZE라는 변수나 SIZE가 들어간 문자열같은 건 변하지 않는다)
+- 매크로는 전처리기를 통해 처리되기 때문에 일반적인 변수처럼 함수 안에서 정의됐다고 로컬변수 취급되지 않고 함수 밖에서도 영향을 끼친다
+- 매크로는 새로운 정의가 원래 정의와 같지 않은 이상 다시 정의될 수 없다
+- #undef directive 를 통해 undefine 될 수 있다 -> 이 경우 같은 이름으로 다른 정의를 다시 내릴 수 있다
+
+<Parentheses in Macro Definitions>
+- replacement list가 연산자를 가지고 있으면 매크로 전체를 괄호로 묶는다
+- parameter가 들어가면 parameter마다 괄호로 묶는다
+* 매크로에 괄호를 안 쳐서 덧셈을 먼저 할 줄 알았는데 곱셈을 먼저 한다거나 하는 일이 일어나면 '입력값에 따라 가끔만 나오고 에러메세지도 안 나오는' 미친 에러가 나올 수 있으므로 주의!
+
+<Creating longer macros>
+- comma operator를 통해서 여러 expresison을 하나로 묶어서 긴 매크로를 만들 수 있다
+#define ECHO(s) (gets(s), puts(s))
+- statements를 묶는 경우 {}를 통해서 묶을 수도 있지만 이건 안 하는 게 좋은 게 if문의 경우 에러가 발생하는 경우가 있다
+	- do {...} while (0) 처럼 한 번만 실행되는 반복문을 작성하여 에러를 없앨 수 있다
+
+<Predefined macros>
+__Line__ 컴파일되는 소스파일에서의 라인 넘버 (__LINE__이 들어가 있는 줄)
+__FILE__ 파일 이름
+__DATE__ 컴파일 날짜
+__TIME__ 컴파일 시각
+__STDC__ 컴파일러가 C 언어 표준을 따르면 1 따르지 않으면 0
+
+<Additional predefined macros in C99>
+__STDC__HOSTED__ 
+	- C의 실행환경 (implementation: 프로그램을 실행하는 컴파일러 및 부가 소프트웨어집합을 의미)이 hosted implementation 이나 freestanding implementaion 인지를 검사한다
+	- hosted 에서는 C99 표준을 만족하는 모든 프로그램을 실행할 수 있다. freestanding에서는 복소수나 가장 기본적인 헤더 외에 다른 헤더를 가지고 있는 프로그램을 돌릴 수 있다는 보장이 없다
+	- hosted면 1 freestanding이면 0
+__STDC__VERSION__
+	- 컴파일러가 인식하는 C 표준 버전을 알 수 있다
+	- C99 의 경우 199901L, 다른 표준이나 개정의 경우 출시된 연도와 달을 나타내는 정수
+! 아래 매크로는 컴파일러가 조건을 만족하느냐에 따라 정의가 되어 있거나 되어 있지 않을 수도 있다
+__STDC_IEC_559__
+	- IEC 60559 표준에 따른 부동소수점 연산을 지원하면 정의되고 1의 값을 가진다
+__STDC_IEC_559_COMPLEX__
+	- IEC 60559 표준에 따른 복소수 연산을 지원하면 정의되고 1의 값을 가진다
+__STDC_ISO_10646_
+	- if values of type wchar_t are represented by the codes in the ISO/IEC 10646 standard, has value yyyymmL (year and month of revision)
+
+<Empty macro arguments>
+- C99는 매크로의 전달인자를 비워두는 것을 허용한다
+- 콤마의 개수는 원래 매크로와 같아야 하며 빈 전달인자는 '아무것도 아닌 것'으로 대체된다 (예를 들어 x-y라는 매크로에서 x의 자리를 비워두면 -y 만을 나타내는 표현식이 된다)
+- #연산자의 전달인자 자리를 비워두면 빈 문자열을 나타내게 된다
+
+<Macros with a variable numnber of arguments>
+- 개수가 정해지지 않은 전달인자를 받는 매크로를 정의할 수 있다
+#define TEST(condition, ...) ((condition) ? printf("Passed Test: %s\n", #condition) : printf(__VA_ARGS__))
+- ... 토큰은 ellipsis로 매크로 매개변수의 마지막에 들어간다.
+- __VA_ARGS__ 는 생략된 전달인자 (ellipsis에 해당하는 전달인자들) 을 의미한다
+
+<The __func__ identifier>
+- 전처리기에 포함된 기능은 아니지만 디버깅과 관련이 깊다
+- The effect is the same as if each function contains the following declaration at the beginning of its body
+static const char __func__ = "function-name" (함수이름이 들어있는 문자열)
+- 함수의 시작과 끝에 이걸 출력하는 매크로를 지정해서 디버깅할 때 함수가 언제 호출되고 반환되었는지를 파악할 수도 있다
+
+
+
+
