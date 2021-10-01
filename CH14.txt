@@ -145,6 +145,7 @@ static const char __func__ = "function-name" (함수이름이 들어있는 문�
 - when applied to an identifier, defined produces the value 1 if the identifier is a currently defined macro; 0 otherwise
 #if defined(DEBUG) //DEBUG 가 정의되어 있는 매크로면 실행 (값이 할당되어 있는지는 상관없고 정의되어 있는지만 검사)
 #if defined DEBUG //이것처럼 괄호를 안 쳐도 된다
+- defined(FOO) && defined(BAR) 처럼 AND,OR 연산도 사용 가능하다
 
 <The #ifdef and #ifndef directives>
 - #ifdef directive has the form
@@ -191,5 +192,5 @@ _Pragma ( string-literal )
 - destringizes the string literal ("를 없애고 \" 를 "로 변환하는 등)
 - _Pragma 는 directive가 아니라 연산자이므로 매크로 정의에 쓰일 수 있다
 
-
+* 전처리기는 코멘트나 문자열이 잘못되어 있으면 제대로 작동하지 않을 수 있다. 따라서 주석처럼 아무렇게나 코드를 적고 조건부컴파일로 컴파일이 되지 않도록 하려는 건 위험할 수 있다
 
