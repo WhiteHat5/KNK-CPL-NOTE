@@ -71,9 +71,11 @@
 int MK_ID(1), MK_ID(2) ; // 원래 프로그램
 int i1, i2 ; // 전처리기 처리 후 수정된 프로그램
 - 내용은 거의 비슷한데 타입만 다른 함수 등을 작성할 때 같은 함수에서 유형만 매크로로 바꿀 수 있는데 이 경우 함수 이름이 같으면 안되니 ##연산자로 다른 이름을 각각 지정해 줄 수 있다
+* ##연산자가 들어간 매크로로 3개의 변수 이름을 합치려고 하는 등의 시도 (nested form) 은 불가능함, 괄호에 따라 순서가 정해지지 않고 앞에서부터 하기 때문
 
 <General properties of macros>
 - 매크로 내용은 다른 매크로 이름을 포함할 수 있다 (전처리기는 모든 매크로 이름을 매크로 내용으로 바꿀 때까지 프로그램을 계속 스캔한다)
+*  두 매크로의 정의가 서로의 이름을 포함하면? ; 옛날 컴파일러는 반복해서 서로의 내용을 바꾸고 무한 루프에 빠진다. 
 - The preprocessor replaces only entire tokens, not portion of tokens (SIZE라는 매크로가 있으면 BUFFER_SIZE라는 변수나 SIZE가 들어간 문자열같은 건 변하지 않는다)
 - 매크로는 전처리기를 통해 처리되기 때문에 일반적인 변수처럼 함수 안에서 정의됐다고 로컬변수 취급되지 않고 함수 밖에서도 영향을 끼친다
 - 매크로는 새로운 정의가 원래 정의와 같지 않은 이상 다시 정의될 수 없다
@@ -130,6 +132,64 @@ __STDC_ISO_10646_
 static const char __func__ = "function-name" (함수이름이 들어있는 문자열)
 - 함수의 시작과 끝에 이걸 출력하는 매크로를 지정해서 디버깅할 때 함수가 언제 호출되고 반환되었는지를 파악할 수도 있다
 
+<Conditional compilation>
+- inclusion or exclusion of a section of program text depending on the outcome of a test performed by the preprocessor
+
+<The #if and #endif directives>
+- 디버깅을 할 때 변수 값을 출력하는 구문을 만드는 등 원래 프로그램에 필요없는 부분을 작성하는 경우가 있는데 이 경우 조건부 컴파일을 활용하여 디버깅에 필요한 부분이 컴파일될 지를 결정할 수 있다
+- #if 뒤에 있는 값이 non-zero 이면 #if와 #endif 가 있는 줄만 삭제한다
+- #if 뒤에 있는 갑이 0이면 #if 와 #endif 사이에 있는 내용을 함께 삭제한다
+* #if directive는 정의되지 않은 identifier를 0의 값을 가지고 있는 매크로로 인식한다. 따라서 #if 뒤의 identifier가 정의되어 있지 않으면 #if의 내용은 컴파일되지 않는다
+
+<The defined Operator>
+- when applied to an identifier, defined produces the value 1 if the identifier is a currently defined macro; 0 otherwise
+#if defined(DEBUG) //DEBUG 가 정의되어 있는 매크로면 실행 (값이 할당되어 있는지는 상관없고 정의되어 있는지만 검사)
+#if defined DEBUG //이것처럼 괄호를 안 쳐도 된다
+
+<The #ifdef and #ifndef directives>
+- #ifdef directive has the form
+#ifdef identifier
+- tests wheter identifier is currently defined as a macro
+- defined 연산자와 #if directive를 합친 것과 똑같은 효과를 낸다
+- #ifndef 는 identifier가 정의되어 있지 않으면 아래 내용을 컴파일한다
+
+<The #elif and #else directives>
+- #if, #ifdef, #ifndef, #endif 와 같이 쓰인다
+- else if와 비슷하게 쓰인다고 생각하면 될 듯
+- #elif 는 개수 상관없이 몇 개든 들어갈 수 있지만 #else 는 한 #if ~ #endif 구문에 하나만 들어갈 수 있다
+
+<Uses of conditional compilation>
+- 디버깅에 쓸 수 있음; 디버깅 할 때만 쓰는 코드를 따로 분류
+- 운영체제 또는 컴파일러에 따라 달라지는 코드를 관리할 때 쓸 수 있음
+- 정의하려고 하는 매크로 이름이 이미 정의되었는지를 확인할 수 있다
+- 주석에 사용할 수 있다
+
+<The #error directives>
+- has the form
+#error message
+- message를 포함한 에러메세지를 출력하게 되고 이 형태는 컴파일러별로 다르다
+! #error directive를 보면 바로 컴파일을 중단하고 에러메세지를 띄우는 컴파일러도 있으니 주의
+- #if등 조건부 컴파일과 같이 쓰는 경우가 많다 (안 그러면 항상 에러 메세지가 나오니까...)
+
+<The #line directive>
+- alter the way program lines are numbered
+- has two forms
+#line n
+- causes subsequent lines in the program to be numbered n, n+1, n+2, and so forth
+#line n "file"
+- The lines that follows this directive are assumed to coime from file, with line number starting at n
+* n이나 "file"의 값은 매크로로 지정될 수 있다
+** 이걸 왜 쓰냐? C 코드를 생성하는 프로그램, 즉 컴파일러를 만들 때 사용할 수 있다
+
+<The #pragma directive>
+- 컴파일러마다 다른 특수한 행동을 요청할 수 있다
+#pragma tokens //뒤의 토큰은 컴파일러에 따라 상이
+
+<The _Pragma Operator>
+- used in conjunction with the #pragma directive
+_Pragma ( string-literal )
+- destringizes the string literal ("를 없애고 \" 를 "로 변환하는 등)
+- _Pragma 는 directive가 아니라 연산자이므로 매크로 정의에 쓰일 수 있다
 
 
 
