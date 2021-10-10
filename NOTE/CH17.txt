@@ -1,0 +1,87 @@
+<Dynamic storage allocation>
+- C의 데이터 구조는 일반적으로 크기가 고정되어 있다. (배열의 길이가 프로그램 내내 변하지 않는 등)
+- dynamic memory allocation is the ability to allocate storage during program execution
+
+<Memory allocation functions>
+- 3 functions declared in <stdlib.h>
+- malloc : allocates a block of memory but doesn't initialize it
+- calloc : allocates a block of memory and clears it
+- realloc : resizes a previously allocated block of memory
+- 메모리 할당 함수를 호출하면 함수는 메모리 블럭에 저장할 데이터 타입에 대한 정보가 없기 때문에 void* 포인터값을 반환한다 (essentially, just a memory address)
+
+<Null pointers>
+- 메모리 할당 함수가 호출되었는데 요청한 크기에 맞는 메모리를 지정할 수 없을 때 함수는 null pointer 를 반환한다
+- null pointer 는 NULL 이라는 매크로로 정의되어 있다. (정의되어 있는 헤더는 <locale.h>, <stddef.h>, <stdio.h>, <stdlib.h>, <string.h>, <time.h>, <wchar.h>)
+- C에서는 포인터도 숫자처럼 참,거짓을 표현할 수 있으며 null pointer의 경우 거짓, 나머지 포인터는 모두 참을 가리킨다.
+
+<Using malloc to allocate memory for string>
+- the malloc function has the prototype
+void *malloc(size_t size) ;
+- malloc allocates a block of size bytes and returns a pointer to it
+- n개의 문자를 가진 string을 위한 공간을 할당하는 예시
+p = malloc(n+1); //p is char* variable
+* malloc의 반환값은 void* 타입이기 때문에 위 예시에서는 char*으로 자동으로 변환되었다. malloc함수 앞에 (char*)를 붙여 수동으로 타입변환을 해 줄 수도 있다
+! null character를 위해 메모리 공간을 1byte 더 할당하는 것을 잊지 말자
+
+<Using dynamic storage allocation in string functions>
+- 동적 메모리 할당으로 새로운 string을 함수 내에서 만들어서 반환할 수 있다. (이 string을 위한 메모리공간도 함수 내에서 할당된다)
+! 이렇게 함수 내에서 메모리를 할당할 경우에는 할당된 메모리가 필요없어진 경우 바로 free를 통해 메모리공간을 풀어줘야 메모리가 가득 차는 문제를 해결할 수 있다
+
+<Arrays of dynamically allocated strings>
+- string의 배열을 2차원 char 배열로 나타낼 수도 있지마 char*의 1차원 배열로 나타낼 수도 있다
+- 이 경우 string의 순서를 바꿀 때 포인터만 바꾸면 되므로 간단하게 배열 내 위치를 바꿀 수 있다. (실제로 메모리 내 문자열들의 위치가 바뀌지는 않고 배열 내 포인터들의 값만 바뀌는 것이다)
+
+<Dynamically allocated arrays>
+- 배열의 크기를 프로그램 실행 중에 정할 수 있으면 편할 것이다
+- malloc이 주로 배열에 메모리를 할당하는 데 쓰이지만 calloc이 모든 메모리를 초기화하기 위해 사용되기도 한다
+- realloc으로 배열의 크기를 조정한다
+
+<Using malloc to allocate storage for an array>
+- string의 경우와 다른 점은 배열의 원소는 타입에 따라 1byte가 아닐 수도 있다는 점이다
+- 보통 할당하고자 하는 메모리의 크기는 (배열의 원소 개수) * (sizeof(배열 타입)) 으로 표현한다
+int a*;
+a = malloc(n * sizeof(int)); //a는 일반적인 배열이름처럼 쓰일 수 있다
+
+<The calloc function>
+- has the prototype (in <stdlib.h>)
+void *calloc(size_t nmemb, size_t size);
+- calloc은 nmemb 개의 원소를 가지고 원소의 크기가 size인 배열의 크기만큼 메모리를 할당한다
+- 할당된 메모리의 모든 비트는 0이다
+*  nmemb에 1을 넣으면 size 크기의 데이터를 위한 메모리공간을 할당한다
+
+<The realloc function>
+- has the prototype (in <stdlib.h>)
+void *realloc(void *ptr, size_t size);
+- ptr은 malloc,calloc,realloc을 통해 얻은 메모리 블럭을 가리키고 있어야 한다 (안 그러면 예측불가능한 결과가 나온다네용)
+- size는 새로운 메모리 블럭의 크기를 나타낸다
+* ptr이 꼭 배열로 쓰이고 있는 메모리를 가리킬 필요는 없지만 해보면 그래야 하는 경우가 많다고 하네용...?
+- C표준에서 정하는 realloc의 규칙
+	- 메모리를 확장하면 확장된 구간을 초기화하지 않는다
+	- 메모리를 확장할 수 없으면 null pointer를 반환한다; 기존 메모리 블럭에 담긴 값은 변하지 않는다 //현재 메모리 공간에서 메모리 확장이 불가능하면 다른 메모리 공간에 메모리를 할당하고 그쪽으로 원래 메모리에 있던 값을 복사한다
+	! 메모리에 있던 값이 다른 공간으로 옮겨갔을 수 있기 때문에 realloc을 호출한 후에는 매모리를 가리키고 있던 포인터들을 모두 업데이트해주는 것이 중요하다
+	- 첫 전달인자로 null pointer를 받으면 malloc과 같은 행동을 보인다
+	- 두번째 전달인자로 0을 받으면 메모리블럭을 할당해제한다
+
+<Deallocating storage>
+- 앞서 나온 메모리 관리 함수들은 메모리를 힙 공간에서 가져다 쓴다
+- 이걸 너무 무분별하게 사용하면 힘 공간이 가득 차서 메모리 할당 함수가 null pointer를 반환할 수 있다
+- 프로그래머가 할당해놓고 안 쓰는 메모리 (심지어 그 메모리를 가리키고 있던 포인터를 다른 값으로 수정해서 다시 접근할 수도 없게 되기도 하는) 를 가비지라고 한다
+- 다른 프로그램은 이걸 가비지 콜렉터라는 것으로 관리하기도 하는데 C는 그런 거 없다
+- free 함수로 직접 가비지를 없애야 한다
+
+<The free function>
+- has the prototype (in <stdlib.h>)
+void free(void *ptr);
+- ptr이 가리키고 있는 메모리공간을 할당해제한다
+
+<The "dangling pointer" problem 유효한 객체를 가리키고 있지 않은 포인터>
+- free 로 메모리 공간을 해제했는데 이 공간을 가리키는 포인터를 통해 이 공간에 접근하려고 해서 생기는 오류
+- 할당해제된 메모리를 가리키는 포인터를 사용하지 않도록 주의
+
+<Linked lists>
+- consists of a chain of structures (called nodes)
+- each node contains a pointer to the next node in the chain
+- 마지막 노드는 null pointer를 가지고 있다
+- 노드의 삽입이나 삭제가 쉽다
+- 연결 리스트의 처음과 가까울 수록 접근에 걸리는 시간이 짧다 (배열의 경우 모든 원소의 접근시간이 같은 것과 대비된다)
+
