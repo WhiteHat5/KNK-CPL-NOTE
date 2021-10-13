@@ -3,30 +3,47 @@
 #include <stdbool.h>
 #include "stack.h"
 
-#define STACK_SIZE 100
+struct node {
+	int value;
+	struct node *next;
+};
 
-int integers[STACK_SIZE];
-int top = 0;
+struct node *first = NULL;
 
-void push(int integer)
-{
-    if (top == STACK_SIZE)
-        stack_overflow();
-    else
-        integers[top++] = integer;
+bool push(int integer)
+{	
+	struct node *new_node;
+    if ((new_node = malloc(sizeof(struct node))) == NULL)
+        return false;
+    else {
+		new_node->value = integer;
+		new_node->next = first;
+		first = new_node;
+	}
+	return true;
 }
 
 int pop(void)
 {
     if (is_empty())
         stack_underflow();
-    else
-        return integers[--top];
+    else {
+		int value;
+		value = first->value;
+		struct node *temp = first;
+		first = first->next;
+		free(temp);
+		return value;
+	}
+        
 }
 
 bool is_empty(void)
 {
-    return (top == 0);
+    if(first == NULL)
+		return true;
+	else
+		return false;
 }
 
 void stack_overflow(void)
@@ -43,12 +60,23 @@ void stack_underflow(void)
 
 void print_result(void)
 {
-    if (top == 1){
+	int p;
+    if (p = pop()){
         printf("Value of expression: ");
-        printf("%d\n", pop());
+        printf("%d\n", p);
     }
     else {
-        printf("Expression is too complex\n");
-        top = 0; // clear stack
+        printf("Expression is too complex\n"); 
+		make_empty();// clear stack
     }
+}
+
+void make_empty()
+{
+	struct node *temp;
+	while(first != NULL) {
+		temp = first;
+		first = first->next;
+		free(temp);
+	}
 }

@@ -13,6 +13,11 @@
 - 메모리 할당 함수가 호출되었는데 요청한 크기에 맞는 메모리를 지정할 수 없을 때 함수는 null pointer 를 반환한다
 - null pointer 는 NULL 이라는 매크로로 정의되어 있다. (정의되어 있는 헤더는 <locale.h>, <stddef.h>, <stdio.h>, <stdlib.h>, <string.h>, <time.h>, <wchar.h>)
 - C에서는 포인터도 숫자처럼 참,거짓을 표현할 수 있으며 null pointer의 경우 거짓, 나머지 포인터는 모두 참을 가리킨다.
+* NULL은 사실 그냥 0이다. C에서는 포인터가 필요한 상황에서 0을 사용하면 이걸 null pointer로 인식하는데 그냥 0을 쓰면 이게 상수인지 널 포인터인지 헷갈려서 정의해 놓은 거라고 한다
+** NULL 을 (void*) 0 으로 정의해두기도 한다. 이 경우 variable-length argument에서 정확하게 나온다고 하네용
+*** 정의가 상관있는 경우는 많지 않으니 그냥 NULL을 null pointer의 이름이라고 알아두라고 하네용
+* null pointer가 꼭 0으로 이루어진 바이트인 건 아니고 컴파일러마다 메모리에 존재하지 않는 주소를 할당한다던가 다를 수 있다네용
+
 
 <Using malloc to allocate memory for string>
 - the malloc function has the prototype
@@ -41,6 +46,7 @@ p = malloc(n+1); //p is char* variable
 - 보통 할당하고자 하는 메모리의 크기는 (배열의 원소 개수) * (sizeof(배열 타입)) 으로 표현한다
 int a*;
 a = malloc(n * sizeof(int)); //a는 일반적인 배열이름처럼 쓰일 수 있다
+p = malloc(n * sizeof(*p)); //p가 가리키고 있는 객체의 크기 * 배열의 원소 개수 만큼의 메모리를 할당한다 == 길이가 n인 배열의 크기만큼의 메모리 할당
 
 <The calloc function>
 - has the prototype (in <stdlib.h>)
@@ -141,5 +147,70 @@ struct node *search_list(struct node *list, int n)
 - 정렬된 리스트는 노드를 삽입하기 어렵다 (리스트를 검색하고 리스트 중간에 노드를 삽입해야 하므로)
 - 대신 빠른 검색이 가능하다 (찾는 정보의 범위를 넘어가면 바로 검색을 중단할 수 있으므로 리스트 전체를 검색할 필요가 없다)
 
+<Pointers to pointers>
+- 포인터가 가리키는 값이 아니라 포인터 자체의 값 (원래 값의 주소값)을 바꾸는 함수를 작성할 수 있다
+* 이 책에서는 연결리스트의 첫번째 노드를 바꾸는 함수를 설명하는데 다른 사용법도 많겠지
 
+<Pointers to functions>
+- C는 포인터가 데이터가 아닌 것도 가리킬 수 있도록 허용한다
+- 함수도 메모리공간을 차지하니까 함수도 주소가 있고; 따라서 함수를 가리키는 포인터도 존재한다
 
+<Function pointers as arguments>
+double integrate(double (*f)(double), double a, double b); //함수 f를 a부터 b까지 적분하는 함수의 prototype
+	- 괄호가 필수적임. 안 그러면 double* 를 반환하는 함수로 인식됨
+double integrate(double f(double), double a, double b); //컴파일러는 이 prototype을 위 코드와 똑같이 인식함
+- 전달인자로 함수가 들어갈 때는 ()가 붙지 않는다. C는 ()는 호출을 할 때만 사용하고 함수 이름 자체는 함수에 대한 포인터다
+result = integrate(sin, 0.0 PI/2); //sin 뒤에 괄호가 붙지 않았다
+- 전달인자로 전달된 함수의 포인터는 함수를 호출하는데 사용된다
+y = (*f)(x); //그런데 f(x)로 써도 된다고 한다... 필자는 전달인자로서의 f가 함수이름이 아니라 포인터라는 것을 강조하기 위해 (*f)를 사용하겠다고 한다. 헷갈리넹
+
+<Other uses of function pointers>
+- C는 함수를 가리키는 포인터를 데이터를 가리키는 포인터와 똑같이 취급하기 때문에 이 포인터를 변수에 저장할 수도 있다
+void (*pf)(int); //pf는 int 형 매개변수와 void반환값을 가지는 함수를 가리킬 수 있는 포인터다
+pf = f; //pf가 함수 f를 가리키게 되었다. &가 없다는 점에 주의
+- 함수의 포인터로 배열을 만들 수도 있다
+void (*file_cmd[])(void) = {new_cmd, open_cmd, close_cmd, close_all_cmd};
+	- (*file_cmd[n])(); 또는 file_cmd[n](); 로 함수를 호출할 수 있다
+	- switch로도 비슷한 코드를 작성할 수 있지만 이건 배열이라 프로그램 실행 중에 원소를 바꿀 수 있다는(!!!) 장점이 있다
+
+<Restricted pointers(C99)>
+- 포인터 선언에 restrict 키워드를 추가할 수 있다
+int * restrict p;
+- restricted pointer로 가리키는 객체는 그 포인터로밖에 접근할 수 없다
+- 객체를 두 가지 이상의 방법으로 접근하려고 하는 것을 aliasing이라고 부른다
+- 이때 restricted pointer가 로컬 변수로 선언되었으면 선언된 블럭 안에서만 작용한다
+- 함수의 매개변수로 restricted pointer가 이용되면 함수 안에서만 aliasing을 막는다
+* 그런데 사실 이거보다 훨씬 복잡하고 alias를 허용하는 예외까지 존재한다고 함 ㅋㅋ 어쩌라는 거지
+- 아무튼 restrict를 사용함으로써 "메모리 공간을 겹치지 않게 사용하는" 경우에 활용할 수 있다고 한다
+void *memcpy(void * restrict s1, const void * restrict s2, size_t n);
+- 위 함수에서 메모리를 s2에서 s1으로 복사할 때 s1과 s2가 겹치지 않는 공간이라는 것을 짐작할 수 있다 (짐작이라고 쓴 이유는 또 이걸 보장해주진 않는다고 한다. 하...)
+- 사실 뭐 특별한 기능이 있는 건 아니고 최적화프로그램이 사용한다고 한다
+	- 심지어 restrict를 빼도 정확히 똑같이 동작하는 걸 보장한다고 한다
+	- 일단 "객체에 대한 접근을 하나로 제한"하는 키워드 정도로 알아두자
+
+<Flexible array members(C99)>
+- 길이가 1인 char배열을 선언하고 메모리공간은 더 많이 할당함으로써 길이가 자유로운 string을 만들 수 있다
+struct vstring{
+	int len;
+	char chars[1];
+};
+struct vstring *str = malloc(sizeof(struct vstring) + n - 1);
+str->len = n;
+- 위의 예시에서는 n-1 characters 만큼의 메모리 공간을 추가로 할당하고있다
+- "struck hack"이라고도 불린다
+* 위 예시는 일반적인 string처럼 마지막 문자를 '\0'으로 해 길이를 재는 식의 string이 아니라 길이도 함께 정의하는 대신 널 문자를 없앤 다른 형태의 문자열이라는 것에 주의
+- 구조체의 마지막 멤버가 char배열이어야 한다는 것에 주의하자
+- C99에서는 struck hack을 지원하기 위해 구조체의 마지막 멤버가 배열일 경우 길이를 생략해도 되도록 했다
+struct vstring{
+	int len;
+	char chars[]; //길이를 생략했다
+};
+- 위 예시에서 chars의 길이는 vstring 구조체에 메모리 공간이 할당될 때 정해진다
+- sizeof는 flexible array member를 무시한다
+- a few rules for flexible array member
+	- flexible array member는 구조체 마지막에 나와야 한다
+	- 1개 이상의 다른 멤버가 있어야 한다
+	- flexible array member를 포함한 구조체를 복사하면 다른 멤버들만 복사한다
+- 이렇게 메모리를 얼마나 할당해야 되는지 모르는 경우를 incomplete type이라고 한다
+	- 다른 구조체의 멤버나 배열의 원소가 될 수 없다
+	- 대신 incomplete type의 포인터는 배열의 원소가 될 수 있다
