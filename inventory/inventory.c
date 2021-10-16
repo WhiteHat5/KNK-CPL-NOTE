@@ -1,194 +1,228 @@
-/* 파츠 데이터 베이스를 관리한다 (배열 버전) */
-/* 
-	changelog 1.1.
-	이제 파츠는 파츠번호를 기준으로 정렬되어 데이터베이스에 입력됩니다
+/*********************************************************
+ * From C PROGRAMMING: A MODERN APPROACH, Second Edition *
+ * By K. N. King                                         *
+ * Copyright (c) 2008, 1996 W. W. Norton & Company, Inc. *
+ * All rights reserved.                                  *
+ * This program may be freely distributed for class use, *
+ * provided that this copyright notice is retained.      *
+ *********************************************************/
 
-	changelog 1.2.
-	파츠 구조체에 가격을 표현하는 price멤버를 추가했습니다
-	이제 c 커맨드로 가격을 수정할 수 있습니다
-*/
+/* inventory2.c (Chapter 17, page 434) */
+/* Maintains a parts database (linked list version) */
+
+/* NB: This file has been altered from its original source */
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "readline.h"
 
 #define NAME_LEN 25
-#define MAX_PARTS 100
 
 struct part {
-	int number;
-	char name[NAME_LEN + 1];
-	int on_hand;
-	double price; //1.2. 가격을 의미하는 멤버 추가
-} inventory[MAX_PARTS+1];
+  int number;
+  char name[NAME_LEN+1];
+  int on_hand;
+  struct part *next;
+};
 
-//1.1 p가 파츠들을 파츠 넘버 순서대로 정렬해서 출력하게 만들어라
-//1.2 part 구조체에 price 멤버를 더하라. insert는 이제 사용자에게 가격을 물어본다. search 와 print 는 가격도 출력한다. 가격을 변경할 수 있는 커맨드도 더해라
+struct part *inventory = NULL;   /* points to first part */
 
-int num_parts = 0; /* 현재 저장된 파츠의 개수 */
-
-int find_part (int number);
+struct part *find_part(int number);
 void insert(void);
 void search(void);
 void update(void);
 void print(void);
-void price_change(void); //1.2.가격을 변경하기 위한 함수
+void erase(void);
 
-/*************************************************************
-  main: 사용자가 커맨드를 입력하게 하고 커맨드에 맞는 함수를 불러온다 
-  사용자가 'q'커맨드를 입력할 때까지 프롬프트를 반복한다.            
-  잘못된 커맨드를 입력하면 에러메세지를 출력한다                    
- *************************************************************/
+/**********************************************************
+ * main: Prompts the user to enter an operation code,     *
+ *       then calls a function to perform the requested   *
+ *       action. Repeats until the user enters the        *
+ *       command 'q'. Prints an error message if the user *
+ *       enters an illegal code.                          *
+ **********************************************************/
 int main(void)
 {
-	char code;
-	for (;;) {
-		printf("커맨드를 입력하세요: ");
-		scanf(" %c", &code);
-		while(getchar() != '\n') /* 나머지 입력을 모두 무시 */
-			;
-		switch(code) {
-			case 'i': insert();
-					  break;
-			case 's': search();
-					  break;
-			case 'u': update();
-					  break;
-			case 'p': print();
-					  break;
-			case 'c': price_change(); //가격 변경 커맨드
-					  break;
-			case 'q': return 0;
-			default: printf("잘못된 커맨드입니다\n");
-		}
-		printf("\n");
-	}
+  char code;
+
+  for (;;) {
+    printf("Enter operation code: ");
+    scanf(" %c", &code);
+    while (getchar() != '\n')   /* skips to end of line */
+      ;
+    switch (code) {
+      case 'i': insert();
+                break;
+      case 's': search();
+                break;
+      case 'e': erase();
+                break;
+      case 'u': update();
+                break;
+      case 'p': print();
+                break;
+      case 'q': return 0;
+      default:  printf("Illegal code\n");
+    }
+    printf("\n");
+  }
 }
 
-/**************************************************
-	find_part: inventory 배열에서 파츠 번호를 찾는다.
-	파츠 번호를 찾으면 파츠의 배열 인덱스를 반환한다.
-	찾지 못하면 -1을 반환한다.
-***************************************************/
-int find_part(int number)
+/**********************************************************
+ * find_part: Looks up a part number in the inventory     *
+ *            list. Returns a pointer to the node         *
+ *            containing the part number; if the part     *
+ *            number is not found, returns NULL.          *
+ **********************************************************/
+struct part *find_part(int number)
 {
-	int i;
-	
-	for(i = 0; i < num_parts; i++) 
-		if(inventory[i].number == number)
-			return i;
-	return -1;
+  struct part *p;
+
+  for (p = inventory;
+       p != NULL && number > p->number;
+       p = p->next)
+    ;
+  if (p != NULL && number == p->number)
+    return p;
+  return NULL;
 }
 
-/*********************************************************************************
-	insert: 사용자에게 새로운 파츠에 대한 정보를 입력하게 하고 파츠를 데이터베이스에 넣는다.
-	파츠가 이미 존재하거나 데이터베이스가 가득 찼으면 에러를 출력한다.
-**********************************************************************************/
+/**********************************************************
+ * insert: Prompts the user for information about a new   *
+ *         part and then inserts the part into the        *
+ *         inventory list; the list remains sorted by     *
+ *         part number. Prints an error message and       *
+ *         returns prematurely if the part already exists *
+ *         or space could not be allocated for the part.  *
+ **********************************************************/
 void insert(void)
 {
-	int part_number;
-	
-	if (num_parts == MAX_PARTS) {
-		printf("데이터베이스가 가득 찼습니다; 더이상 파츠를 추가할 수 없습니다.\n");
-		return;
-	}
-	
-	printf("파츠 번호를 입력하세요: ");
-	scanf("%d", &part_number);
-	if(find_part(part_number) >= 0) {
-		printf("이미 존재하는 파츠입니다.\n");
-		return;
-	}
-	
-	inventory[num_parts].number = part_number;
-	printf("파츠 이름: ");
-	read_line(inventory[num_parts].name, NAME_LEN);
-	printf("파츠 개수를 입력하세요: ");
-	scanf("%d", &inventory[num_parts].on_hand);
-	//1.2. 가격을 입력하는 라인 추가
-	printf("파츠 가격을 입력하세요: ");
-	scanf("%lf", &inventory[num_parts].price);
-	
-	//1.1. 이후 코드는 정렬을 위한 코드 
-	for (int i = 0; i < num_parts; i++) {
-		if (inventory[num_parts].number < inventory[i].number) {
-			for(int j = num_parts ; j >= i; j--) {
-				inventory[j+1] = inventory[j];
-			}
-			inventory[i] = inventory[num_parts+1];
-		}
-	}
-	//1.1. 여기까지 정렬을 위한 코드
-	
-	num_parts++;
+  struct part *cur, *prev, *new_node;
+
+  new_node = malloc(sizeof(struct part));
+  if (new_node == NULL) {
+    printf("Database is full; can't add more parts.\n");
+    return;
+  }
+
+  printf("Enter part number: ");
+  scanf("%d", &new_node->number);
+
+  for (cur = inventory, prev = NULL;
+       cur != NULL && new_node->number > cur->number;
+       prev = cur, cur = cur->next)
+    ;
+  if (cur != NULL && new_node->number == cur->number) {
+    printf("Part already exists.\n");
+    free(new_node);
+    return;
+  }
+
+  printf("Enter part name: ");
+  read_line(new_node->name, NAME_LEN);
+  printf("Enter quantity on hand: ");
+  scanf("%d", &new_node->on_hand);
+
+  new_node->next = cur;
+  if (prev == NULL)
+    inventory = new_node;
+  else
+    prev->next = new_node;
 }
 
-/*********************************************************
-	search: 사용자에게 파츠 번호를 입력하게 하고 데이터베이스에서
-	파츠를 검색한다. 파츠가 존재하면 파츠 이름과 개수를 출력한다.
-	존재하지 않을 시 에러메세지를 출력한다.
-**********************************************************/
+/**********************************************************
+ * erase: Prompts the user to enter a part number, then   *
+ *        attempts to erase that part from the database.  *
+ *        If the part doesn't exist, prints an error      *
+ *        message.                                        *
+ **********************************************************/
+void erase(void)
+{
+	int d;
+	struct part *prev, *cur;
+	
+    printf("Enter the part number to erase: ");
+	scanf("%d", &d);
+	for(cur = inventory, prev = NULL;
+	   cur != NULL, cur->number != d;
+	   prev = cur, cur = cur->next)
+	;
+	if(cur == NULL) {
+		printf("Part doesn't exist\n");
+		return;
+	}
+	if(prev == NULL) {
+		free(cur);
+		inventory = NULL;
+		return;
+	}
+	if(cur->next == NULL) {
+		free(cur);
+		prev->next = NULL;
+	}
+	else {
+		prev->next = cur->next;
+		free(cur);
+	}
+}
+/**********************************************************
+ * search: Prompts the user to enter a part number, then  *
+ *         looks up the part in the database. If the part *
+ *         exists, prints the name and quantity on hand;  *
+ *         if not, prints an error message.               *
+ **********************************************************/
 void search(void)
 {
-	int i, number;
-	
-	printf("파츠 번호를 입력하세요: ");
-	scanf("%d", &number);
-	i = find_part(number);
-	if(i >= 0){
-		printf("파츠 이름: %s\n", inventory[i].name);
-		printf("개수: %d\n", inventory[i].on_hand);
-		printf("가격: $%f\n", inventory[i].price); //1.2. 가격을 출력하는 라인 추가
-	} else
-		printf("요청한 파츠를 찾을 수 없습니다\n");
+  int number;
+  struct part *p;
+
+  printf("Enter part number: ");
+  scanf("%d", &number);
+  p = find_part(number);
+  if (p != NULL) {
+    printf("Part name: %s\n", p->name);
+    printf("Quantity on hand: %d\n", p->on_hand);
+  } else
+    printf("Part not found.\n");
 }
 
-/*********************************************
-	update: 사용자에게 파츠 번호를 입력하게 한다.
-	파츠가 존재하지 않으면 에러메세지를 출력한다.
-	파츠가 존재하면 개수의 변화를 입력하게 한 뒤
-	데이터베이스를 업데이트한다.
-**********************************************/
+/**********************************************************
+ * update: Prompts the user to enter a part number.       *
+ *         Prints an error message if the part doesn't    *
+ *         exist; otherwise, prompts the user to enter    *
+ *         change in quantity on hand and updates the     *
+ *         database.                                      *
+ **********************************************************/
 void update(void)
 {
-	int i, number, change;
-	
-	printf("파츠 번호를 입력하세요: ");
-	scanf("%d", &number);
-	i = find_part(number);
-	if(i >= 0) {
-		printf("개수의 변화를 입력하세요: ");
-		scanf("%d", &change);
-		inventory[i].on_hand += change;
-	} else
-		printf("요청한 파츠를	찾을 수 없습니다\n");
+  int number, change;
+  struct part *p;
+
+  printf("Enter part number: ");
+  scanf("%d", &number);
+  p = find_part(number);
+  if (p != NULL) {
+    printf("Enter change in quantity on hand: ");
+    scanf("%d", &change);
+    p->on_hand += change;
+  } else
+    printf("Part not found.\n");
 }
 
-/*********************************************************
-	print: 데이터베이스에 있는 모든 파츠를 출력한다.
-	파츠 번호, 파츠 이름, 파츠 개수를 출력합니다.
-	파츠는 데이터베이스에 입력된 순서대로 출력됩니다.
-**********************************************************/
+/**********************************************************
+ * print: Prints a listing of all parts in the database,  *
+ *        showing the part number, part name, and         *
+ *        quantity on hand. Part numbers will appear in   *
+ *        ascending order.                                *
+ **********************************************************/
 void print(void)
 {
-	int i;
-	
-	printf("파츠 번호     파츠 이름                    "
-		   "파츠 개수  파츠 가격\n");
-	for (i = 0; i < num_parts; i++)
-		printf("%8d  %-25s%11d%11.1f\n", inventory[i].number, inventory[i].name, inventory[i].on_hand, inventory[i].price); //1.2.가격을 나타냄
-}
+  struct part *p;
 
-void price_change(void)
-{
-	int i, number;
-	double change;
-	
-	printf("파츠 번호를 입력하세요: ");
-	scanf("%d", &number);
-	i = find_part(number);
-	if(i >= 0) {
-		printf("가격의 변화를 입력하세요: ");
-		scanf("%lf", &change);
-		inventory[i].price += change;
-	} else
-		printf("요청한 파츠를	찾을 수 없습니다\n");
+  printf("Part Number   Part Name                  "
+         "Quantity on Hand\n");
+  for (p = inventory; p != NULL; p = p->next)
+    printf("%7d       %-25s%11d\n", p->number, p->name,
+           p->on_hand);
 }
