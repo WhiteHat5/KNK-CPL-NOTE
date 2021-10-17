@@ -25,6 +25,10 @@ int main(void)
 		if (strlen(input_word) == 0)
 			break;
 		stored_words[num_words] = malloc(strlen(input_word)+1);
+		if (stored_words[num_words] == NULL) {
+			printf("NO SPACE LEFT\n");
+			break;
+		}
 		strcpy(stored_words[num_words], input_word);
 		num_words++;
 	}
